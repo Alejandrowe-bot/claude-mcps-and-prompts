@@ -1,0 +1,710 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "path": "gmail-mcp-server"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 2,
+      "position": [
+        -224,
+        -208
+      ],
+      "id": "2bc987c8-cca5-4015-ad7b-0ea41074ecf0",
+      "name": "Gmail MCP Server",
+      "webhookId": "be18eb58-9235-4a6a-b7f9-767319d70198"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "This tool gets many emails from your personal business inbox. Use for direct client communications, partnerships, and personal business matters.",
+        "operation": "getAll",
+        "filters": {
+          "receivedAfter": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Received_After', `Date and time after which the emails you're searching for were received (ISO format: 2026-01-11T00:00:00Z)`, 'string') }}",
+          "receivedBefore": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Received_Before', `Date and time before which the emails you're searching for were received (ISO format: 2026-01-13T00:00:00Z)`, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        -256,
+        0
+      ],
+      "id": "3a1221a8-9c1d-412c-9264-952c3f2c410d",
+      "name": "Get many emails",
+      "webhookId": "f4ca9732-27ee-4870-82ee-ced2e6ebed41",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Your Gmail Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {
+          "threadId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Thread_ID', ``, 'string') }}",
+          "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To_Email', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        -80,
+        0
+      ],
+      "id": "e6b53100-a837-4d81-8eb6-70e227f6bd24",
+      "name": "Draft a Reply",
+      "webhookId": "acc25c7e-e888-463e-9ad2-00ea309a18df",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Your Gmail Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "google-search-console"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 2,
+      "position": [
+        352,
+        -192
+      ],
+      "id": "510a2e35-349f-430b-b5ed-c955df78f8ce",
+      "name": "Google Search Console",
+      "webhookId": "faaf5cdf-43fc-4fb6-b110-5ef20e0ac76f"
+    },
+    {
+      "parameters": {
+        "toolDescription": "List Sites",
+        "url": "https://www.googleapis.com/webmasters/v3/sites",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleOAuth2Api",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.3,
+      "position": [
+        304,
+        0
+      ],
+      "id": "df1bd2a2-5007-4980-9ce6-2647c2dd6627",
+      "name": "List Sites",
+      "credentials": {
+        "googleOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Your Search Console Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "Get search performance data from Google Search Console: clicks, impressions, CTR, position. Use dimensions to group data: \"page\" for URL performance, \"query\" for keyword performance, \"page,query\" for keywords per page, \"date\" for trends over time, \"country\" or \"device\" for segmentation. Data has 2-3 day delay.",
+        "workflowId": {
+          "__rl": true,
+          "value": "YOUR_SUBWORKFLOW_ID",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/YOUR_SUBWORKFLOW_ID",
+          "cachedResultName": "Search Analytics Subworkflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "startDate": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('startDate', `Start date in YYYY-MM-DD format (e.g., 2025-12-01)`, 'string') }}",
+            "endDate": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('endDate', `End date in YYYY-MM-DD format (e.g., 2026-01-10). Data has 2-3 day delay.`, 'string') }}",
+            "dimensions": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('dimensions', `Dimension to group by as JSON array. Examples: [\"page\"], [\"query\"], [\"page\", \"query\"], [\"date\"], [\"country\"], [\"device\"]`, 'string') }}",
+            "rowLimit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('rowLimit', `Max rows to return (default 1000, max 25000)`, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "startDate",
+              "displayName": "startDate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "endDate",
+              "displayName": "endDate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "dimensions",
+              "displayName": "dimensions",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "rowLimit",
+              "displayName": "rowLimit",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        496,
+        0
+      ],
+      "id": "581c3fac-7d3e-4932-8d70-ab9ead5069f3",
+      "name": "Search Analytics"
+    },
+    {
+      "parameters": {
+        "content": "## Gmail Tools",
+        "height": 464,
+        "width": 592
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -336,
+        -272
+      ],
+      "typeVersion": 1,
+      "id": "ffe6bff9-8b6e-42eb-85c1-1d8502752ade",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Google Search Console Tools",
+        "height": 464,
+        "width": 560,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        256,
+        -272
+      ],
+      "typeVersion": 1,
+      "id": "3972e3aa-8d1b-4fea-b806-d6ae7a3d3921",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Supabase",
+        "height": 464,
+        "width": 448,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1248,
+        -272
+      ],
+      "typeVersion": 1,
+      "id": "2cc5eb37-b7c0-42d6-9bc2-e1bcb0ba2bc1",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "path": "supabase-sql"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 2,
+      "position": [
+        1296,
+        -208
+      ],
+      "id": "68918aaa-8a18-4d2e-ae99-e4d97527e78a",
+      "name": "Supabase SQL",
+      "webhookId": "2b35c1db-cef4-4dba-860a-d084eca95b10"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Check if a URL is indexed in Google and get indexing status details",
+        "method": "POST",
+        "url": "https://searchconsole.googleapis.com/v1/urlInspection/index:inspect",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleOAuth2Api",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "inspectionUrl",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters0_Value', `Full URL to inspect (e.g., https://your-domain.com/blog/your-post)`, 'string') }}"
+            },
+            {
+              "name": "siteUrl",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters1_Value', `Site URL, use: sc-domain:your-domain.com`, 'string') }}"
+            },
+            {
+              "name": "languageCode",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters2_Value', `Language code, use: en-US`, 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.3,
+      "position": [
+        688,
+        0
+      ],
+      "id": "11ebd978-c84f-4afd-8704-ad5319eece71",
+      "name": "Inspect URL",
+      "credentials": {
+        "googleOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Your Search Console Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "google-analytics-4"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 2,
+      "position": [
+        864,
+        -208
+      ],
+      "id": "39f93b8b-3c32-4caf-8a7d-4c9f26b83986",
+      "name": "Google Analytics 4",
+      "webhookId": "87aa5e9f-03d2-4d57-9f0d-153833841a1c"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "YOUR_SUBWORKFLOW_ID",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/YOUR_SUBWORKFLOW_ID",
+          "cachedResultName": "Run Report Subworkflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "propertyId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('propertyId', `GA4 property ID (e.g., \"520162535\")`, 'string') }}",
+            "startDate": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('startDate', `Start date: YYYY-MM-DD or \"today\", \"yesterday\", \"7daysAgo\", \"30daysAgo\"`, 'string') }}",
+            "endDate": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('endDate', `End date: YYYY-MM-DD or \"today\", \"yesterday\"`, 'string') }}",
+            "dimensions": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('dimensions', `Comma-separated dimensions (e.g., \"pagePath,sessionSource\"). Options: pagePath, pageTitle, sessionSource, sessionMedium, country, city, deviceCategory, date`, 'string') }}",
+            "metrics": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('metrics', `Comma-separated metrics (e.g., \"sessions,screenPageViews\"). Options: sessions, screenPageViews, activeUsers, newUsers, averageSessionDuration, bounceRate, engagementRate, conversions`, 'string') }}",
+            "limit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('limit', `Max rows (default \"10\")`, 'string') }}",
+            "orderBy": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('orderBy', `Optional. Format: \"metricName:desc\" or \"metricName:asc\" (e.g., \"sessions:desc\")`, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "propertyId",
+              "displayName": "propertyId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "startDate",
+              "displayName": "startDate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "endDate",
+              "displayName": "endDate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "dimensions",
+              "displayName": "dimensions",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "metrics",
+              "displayName": "metrics",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "limit",
+              "displayName": "limit",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "orderBy",
+              "displayName": "orderBy",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        912,
+        16
+      ],
+      "id": "7bf74f49-899e-421c-adbf-94e4fb3ce860",
+      "name": "Run Report"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "YOUR_SUBWORKFLOW_ID",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/YOUR_SUBWORKFLOW_ID",
+          "cachedResultName": "Run Realtime Report Subworkflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "propertyId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('propertyId', `GA4 property ID (e.g., \"520162535\")`, 'string') }}",
+            "dimensions": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('dimensions', `Comma-separated dimensions (e.g., \"unifiedScreenName,country\"). Options: unifiedScreenName, country, city, platform, deviceCategory`, 'string') }}",
+            "metrics": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('metrics', `Comma-separated metrics (e.g., \"activeUsers,screenPageViews\"). Options: activeUsers, screenPageViews, conversions, eventCount`, 'string') }}",
+            "limit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('limit', `Max rows (default \"10\")`, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "propertyId",
+              "displayName": "propertyId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "dimensions",
+              "displayName": "dimensions",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "metrics",
+              "displayName": "metrics",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "limit",
+              "displayName": "limit",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1088,
+        16
+      ],
+      "id": "480e7be3-6cce-4ad8-a3cd-1d717bc0bc0c",
+      "name": "Run Realtime Report"
+    },
+    {
+      "parameters": {
+        "content": "## Google Analytics 4",
+        "height": 464,
+        "width": 432,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        816,
+        -272
+      ],
+      "typeVersion": 1,
+      "id": "49e2771a-7e46-4f8f-9ba4-b69dd4aeb823",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Manage the keywords table in Supabase. Actions: 'insert' (add new keyword), 'update' (change status, refresh data), 'delete' (remove keyword). For insert: only add keywords with competition_index ≤ 25 and volume ≥ 5000. Never duplicate existing keywords.",
+        "method": "POST",
+        "url": "YOUR_SUPABASE_URL/rest/v1/rpc/manage_keyword",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_SUPABASE_SERVICE_KEY"
+            },
+            {
+              "name": "apikey",
+              "value": "YOUR_SUPABASE_SERVICE_KEY"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "p_action",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters0_Value', `Action to perform: insert, update, or delete`, 'string') }}"
+            },
+            {
+              "name": "p_keyword",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters1_Value', `The keyword text (required)`, 'string') }}"
+            },
+            {
+              "name": "p_volume",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters2_Value', `Monthly search volume from Google Ads`, 'string') }}"
+            },
+            {
+              "name": "p_competition_index",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters3_Value', `Competition index 0-100, lower is better`, 'string') }}"
+            },
+            {
+              "name": "p_yoy_trend",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters4_Value', `Year-over-year trend e.g. 0%, -90%, +15%`, 'string') }}"
+            },
+            {
+              "name": "p_icp_fit",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters5_Value', `Target audience description`, 'string') }}"
+            },
+            {
+              "name": "p_angle",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters6_Value', `Content angle/approach for this keyword`, 'string') }}"
+            },
+            {
+              "name": "p_related_posts",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters7_Value', `Array of related post slugs for internal linking`, 'string') }}"
+            },
+            {
+              "name": "p_date_verified",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters8_Value', `Date keyword data was verified (YYYY-MM-DD)`, 'string') }}"
+            },
+            {
+              "name": "p_status",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters9_Value', `Status: available, used, or rejected`, 'string') }}"
+            },
+            {
+              "name": "p_used_in_post",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters10_Value', `Post slug when status is used`, 'string') }}"
+            },
+            {
+              "name": "p_notes",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters11_Value', `Additional notes`, 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.3,
+      "position": [
+        1536,
+        16
+      ],
+      "id": "498eda14-2081-4d3a-9078-6850d5fd7925",
+      "name": "Manage Keywords"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Query the Supabase PostgreSQL database. Returns JSON results. Use this to check table schemas, view data, verify counts, and understand the current database state. Read-only - no modifications allowed.",
+        "method": "POST",
+        "url": "YOUR_SUPABASE_URL/rest/v1/rpc/run_sql",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_SUPABASE_SERVICE_KEY"
+            },
+            {
+              "name": "apikey",
+              "value": "YOUR_SUPABASE_SERVICE_KEY"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "query",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters0_Value', `SQL SELECT query to execute. Only SELECT and WITH (CTE) queries allowed. Example: SELECT * FROM leads LIMIT 5`, 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.3,
+      "position": [
+        1328,
+        16
+      ],
+      "id": "0af0c911-f3cd-402a-8eea-5de716bf958e",
+      "name": "Run Read SQL"
+    }
+  ],
+  "connections": {
+    "Get many emails": {
+      "ai_tool": [
+        [
+          {
+            "node": "Gmail MCP Server",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Draft a Reply": {
+      "ai_tool": [
+        [
+          {
+            "node": "Gmail MCP Server",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Sites": {
+      "ai_tool": [
+        [
+          {
+            "node": "Google Search Console",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Analytics": {
+      "ai_tool": [
+        [
+          {
+            "node": "Google Search Console",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Inspect URL": {
+      "ai_tool": [
+        [
+          {
+            "node": "Google Search Console",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Report": {
+      "ai_tool": [
+        [
+          {
+            "node": "Google Analytics 4",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Realtime Report": {
+      "ai_tool": [
+        [
+          {
+            "node": "Google Analytics 4",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manage Keywords": {
+      "ai_tool": [
+        [
+          {
+            "node": "Supabase SQL",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Read SQL": {
+      "ai_tool": [
+        [
+          {
+            "node": "Supabase SQL",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}

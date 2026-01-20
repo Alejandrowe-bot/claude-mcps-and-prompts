@@ -1,0 +1,106 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "propertyId"
+            },
+            {
+              "name": "startDate"
+            },
+            {
+              "name": "endDate"
+            },
+            {
+              "name": "dimensions"
+            },
+            {
+              "name": "metrics"
+            },
+            {
+              "name": "limit"
+            },
+            {
+              "name": "orderBy"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -64,
+        -64
+      ],
+      "id": "4018dcd0-e975-4706-9cc7-c7e46dccf48a",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json;\n\nconst dimensions = input.dimensions.split(',').map(d => ({ name: d.trim() }));\nconst metrics = input.metrics.split(',').map(m => ({ name: m.trim() }));\n\nconst body = {\n  dateRanges: [{ startDate: input.startDate, endDate: input.endDate }],\n  dimensions,\n  metrics,\n  limit: input.limit || \"10\"\n};\n\nif (input.orderBy) {\n  const [field, direction] = input.orderBy.split(':');\n  body.orderBys = [{ metric: { metricName: field }, desc: direction === 'desc' }];\n}\n\nreturn {\n  propertyId: input.propertyId,\n  body\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        144,
+        -64
+      ],
+      "id": "9e0ff27d-99db-4146-a324-f3a0061f06d6",
+      "name": "Structure"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://analyticsdata.googleapis.com/v1beta/properties/{{ $json.propertyId }}:runReport",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleAnalyticsOAuth2",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.body }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        352,
+        -64
+      ],
+      "id": "7b36ead3-a9a8-4531-a0d8-999e561096d0",
+      "name": "Run Report",
+      "credentials": {
+        "googleAnalyticsOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Your Google Analytics Account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Structure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structure": {
+      "main": [
+        [
+          {
+            "node": "Run Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {}
+}

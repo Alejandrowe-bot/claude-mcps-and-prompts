@@ -1,0 +1,97 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "propertyId"
+            },
+            {
+              "name": "dimensions"
+            },
+            {
+              "name": "metrics"
+            },
+            {
+              "name": "limit"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -128,
+        -80
+      ],
+      "id": "ec12617f-e17c-43f0-b13f-e1d36d463e9c",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json;\n\nconst dimensions = input.dimensions.split(',').map(d => ({ name: d.trim() }));\nconst metrics = input.metrics.split(',').map(m => ({ name: m.trim() }));\n\nconst body = {\n  dimensions,\n  metrics,\n  limit: input.limit || \"10\"\n};\n\nreturn {\n  propertyId: input.propertyId,\n  body\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        -80
+      ],
+      "id": "ab3bed92-88d2-4a3a-92e6-ed8aa14bbb39",
+      "name": "Structure"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://analyticsdata.googleapis.com/v1beta/properties/{{ $json.propertyId }}:runRealtimeReport",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleAnalyticsOAuth2",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.body }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        288,
+        -80
+      ],
+      "id": "f813c225-6453-45dc-9bdf-64f8db13e979",
+      "name": "Run Realtime Report",
+      "credentials": {
+        "googleAnalyticsOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Your Google Analytics Account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Structure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structure": {
+      "main": [
+        [
+          {
+            "node": "Run Realtime Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {}
+}
