@@ -102,4 +102,4 @@ The guides in `/guides` are specific to my setup but show the structure. You'll 
 
 ## Questions?
 
-Open an issue or reach out on Reddit (u/[YOUR_USERNAME]).
+Open an issue or reach out on Reddit (tiagolemos@nodewave.io).
