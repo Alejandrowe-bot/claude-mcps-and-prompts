@@ -1,5 +1,7 @@
 # 🚀 claude-mcps-and-prompts - Effortless SEO Blog Creation
 
+[![SafeSkill 92/100](https://img.shields.io/badge/SafeSkill-92%2F100_Verified%20Safe-brightgreen)](https://safeskill.dev/scan/alejandrowe-bot-claude-mcps-and-prompts)
+
 ## 🛠️ Overview
 
 Welcome to claude-mcps-and-prompts! This application helps you generate SEO-friendly blogs automatically. Using Claude with MCPs, it simplifies the writing process while improving your blog’s visibility. You can benefit from n8n workflows, tailored prompts, and useful style guides. In just 30 days, you could see your impressions grow from 0 to 6,000.
